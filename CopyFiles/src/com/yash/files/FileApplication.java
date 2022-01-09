@@ -70,6 +70,7 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
     performCopyOperation(folderPath, destPath, filesList, selectedDate,folderCount,folderCounter,filePathWithNameList);
     folderCounter++;
     }
+    successMessage(destPath, filePathWithNameList);
   }
 
 
@@ -96,27 +97,31 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
  * @param filePathWithNameList 
    */
   private static void performCopyOperation(File sourcePath, File destPath, String[] filesList, String selectedDate, int folderCount, int folderCounter, List<String> filePathWithNameList) {
-    boolean isSuccess = false;
     for (String fileName : filesList) {
       try {
         File file = new File(sourcePath + "\\" + fileName);
         if (checkFileDate(file, selectedDate)) {
           filePathWithNameList.add(sourcePath + "\\" + fileName);
           FileUtils.copyFileToDirectory(new File(sourcePath + "\\" + fileName), destPath);
-          isSuccess = true;
         }
       }
       catch (IOException e) {
         e.printStackTrace();
       }
     }
-    if (isSuccess && folderCounter==folderCount) {
-      JFrame frame = new JFrame();
-      JOptionPane.showMessageDialog(frame, filePathWithNameList.size() +" copied Successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
-      createLogFile(filePathWithNameList);
-    }
 
   }
+
+
+/**
+ * @param destPath
+ * @param filePathWithNameList
+ */
+private static void successMessage(File destPath, List<String> filePathWithNameList) {
+	JFrame frame = new JFrame();
+      JOptionPane.showMessageDialog(frame, filePathWithNameList.size() +" copied Successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
+      createLogFile(filePathWithNameList);
+}
 
   /**
  * Log File creation
