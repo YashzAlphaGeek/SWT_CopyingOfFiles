@@ -4,11 +4,14 @@
 package com.yash.files;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,10 +23,30 @@ import org.apache.commons.io.FileUtils;
  */
 public class FileApplication {
 
-
   private FilenameFilter textFilefilter;
 
+  
   /**
+ * @param folderPathList 
+ * @param string
+ */
+private static List<String> getFolderList(String sourcePath, List<String> folderPathList) {
+	File directoryPath = new File(sourcePath);
+	folderPathList.add(sourcePath);
+	File[] listFiles = directoryPath.listFiles();
+	for(File file: listFiles)
+	{
+		if(file.isDirectory())
+		{
+		getFolderList(file.getAbsolutePath(),folderPathList);
+		folderPathList.add(file.getAbsolutePath());
+		}
+	}
+	return folderPathList;
+}
+
+
+/**
    * @param sourceFolderLoc - Source Location
    * @param targetFolderLoc - Target Location
    * @param selectedDate - Selected Date
@@ -32,12 +55,22 @@ public class FileApplication {
   public FileApplication(String sourceFolderLoc, String targetFolderLoc, String selectedDate, String selectedfileType) {
     File directoryPath = new File(sourceFolderLoc);
     File destPath = new File(targetFolderLoc);
+	List<String> folderPathList= new ArrayList<>();
     filteringOfFolder(selectedfileType);
     String deleteFilesList[] = directoryPath.list(textFilefilter);
     deleteExistingFileInFolder(targetFolderLoc, deleteFilesList);
     filteringOfFolder(selectedfileType);
-    String filesList[] = directoryPath.list(textFilefilter);
-    performCopyOperation(directoryPath, destPath, filesList, selectedDate);
+    getFolderList(sourceFolderLoc,folderPathList);
+    int folderCount = folderPathList.size();
+    int folderCounter=1;
+    List<String> filePathWithNameList= new ArrayList<String>();
+    for(String path : folderPathList)
+    {
+    File folderPath= new File(path);
+    String filesList[] = folderPath.list(textFilefilter);
+    performCopyOperation(folderPath, destPath, filesList, selectedDate,folderCount,folderCounter,filePathWithNameList);
+    folderCounter++;
+    }
   }
 
 
@@ -55,18 +88,22 @@ public class FileApplication {
 
 
   /**
-   * @param directoryPath
+   * @param sourcePath
    * @param destPath
    * @param filesList
    * @param selectedDate
+ * @param folderCount 
+ * @param folderCounter 
+ * @param filePathWithNameList 
    */
-  private static void performCopyOperation(File directoryPath, File destPath, String[] filesList, String selectedDate) {
+  private static void performCopyOperation(File sourcePath, File destPath, String[] filesList, String selectedDate, int folderCount, int folderCounter, List<String> filePathWithNameList) {
     boolean isSuccess = false;
     for (String fileName : filesList) {
       try {
-        File file = new File(directoryPath + "\\" + fileName);
+        File file = new File(sourcePath + "\\" + fileName);
         if (checkFileDate(file, selectedDate)) {
-          FileUtils.copyFileToDirectory(new File(directoryPath + "\\" + fileName), destPath);
+          filePathWithNameList.add(sourcePath + "\\" + fileName);
+          FileUtils.copyFileToDirectory(new File(sourcePath + "\\" + fileName), destPath);
           isSuccess = true;
         }
       }
@@ -74,14 +111,38 @@ public class FileApplication {
         e.printStackTrace();
       }
     }
-    if (isSuccess) {
+    if (isSuccess && folderCounter==folderCount) {
       JFrame frame = new JFrame();
+      createLogFile(filePathWithNameList);
       JOptionPane.showMessageDialog(frame, "Copied Successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
     }
 
   }
 
   /**
+ * Log File creation
+ * @param filePathWithNameList 
+ */
+private static void createLogFile(List<String> filePathWithNameList) {
+	try {
+		File tempFile = new File("C:\\temp\\FileApplication.txt");
+		if(tempFile.exists())
+		{
+			tempFile.delete();
+		}
+		FileWriter myWriter = new FileWriter("C:\\temp\\FileApplication.txt");
+		String listOfFiles = String.join("; ", filePathWithNameList);
+		myWriter.write(listOfFiles);
+		myWriter.close();
+		System.out.println("Successfully wrote to the file.");
+		} catch (IOException e) {
+		System.out.println("An error occurred.");
+		e.printStackTrace();
+	}	
+}
+
+
+/**
    * @param file
    * @param selectedDate
    */
