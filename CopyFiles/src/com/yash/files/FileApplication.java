@@ -32,15 +32,25 @@ public class FileApplication {
   public FileApplication(String sourceFolderLoc, String targetFolderLoc, String selectedDate, String selectedfileType) {
     File directoryPath = new File(sourceFolderLoc);
     File destPath = new File(targetFolderLoc);
-    deleteExistingFileInFolder(targetFolderLoc);
+    filteringOfFolder(selectedfileType);
+    String deleteFilesList[] = directoryPath.list(textFilefilter);
+    deleteExistingFileInFolder(targetFolderLoc, deleteFilesList);
+    filteringOfFolder(selectedfileType);
+    String filesList[] = directoryPath.list(textFilefilter);
+    performCopyOperation(directoryPath, destPath, filesList, selectedDate);
+  }
+
+
+  /**
+   * @param selectedfileType
+   */
+  private void filteringOfFolder(String selectedfileType) {
     if (selectedfileType.equals("PDF")) {
       textFilefilter = filteringOfFiles(".pdf");
     }
     if (selectedfileType.equals("TXT")) {
       textFilefilter = filteringOfFiles(".txt");
     }
-    String filesList[] = directoryPath.list(textFilefilter);
-    performCopyOperation(directoryPath, destPath, filesList, selectedDate);
   }
 
 
@@ -54,7 +64,7 @@ public class FileApplication {
     boolean isSuccess = false;
     for (String fileName : filesList) {
       try {
-        File file = new File("");
+        File file = new File(directoryPath + "\\" + fileName);
         if (checkFileDate(file, selectedDate)) {
           FileUtils.copyFileToDirectory(new File(directoryPath + "\\" + fileName), destPath);
           isSuccess = true;
@@ -79,7 +89,7 @@ public class FileApplication {
     try {
       BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
       SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-      String dateCreated = df.format(attr.creationTime().toMillis());
+      String dateCreated = df.format(attr.lastModifiedTime().toMillis());
       if (dateCreated.equals(selectedDate)) {
         return true;
       }
@@ -112,16 +122,16 @@ public class FileApplication {
   }
 
   /**
+   * @param deleteFilesList
    * @param string
    */
-  private static void deleteExistingFileInFolder(String destFilePath) {
-    try {
-      FileUtils.cleanDirectory(new File(destFilePath));
+  private static void deleteExistingFileInFolder(String destFilePath, String[] deleteFilesList) {
+    for (String fileName : deleteFilesList) {
+      File file = new File(destFilePath + "\\" + fileName);
+      if (file.exists()) {
+        file.delete();
+      }
     }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-
   }
 
 

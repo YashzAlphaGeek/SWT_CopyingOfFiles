@@ -78,7 +78,7 @@ public class CopyingOfFiles extends Shell {
     Label lblDate = new Label(this, SWT.NONE);
     lblDate.setAlignment(SWT.CENTER);
     lblDate.setBounds(33, 166, 134, 30);
-    lblDate.setText("Date");
+    lblDate.setText("Date (MM/DD/YYYY)");
 
     btnCopyFiles = new Button(this, SWT.NONE);
     btnCopyFiles.setBounds(242, 281, 98, 36);
@@ -134,7 +134,7 @@ public class CopyingOfFiles extends Shell {
       public void widgetSelected(final SelectionEvent arg0) {
         String presentPath = "C://temp";
         String sourceFolder = openDirectoryDialog(shell, "Select the Source folder", presentPath);
-        if (sourceFolderTxt.getText().isEmpty()) {
+        if (sourceFolder != null) {
           sourceFolderTxt.setText(sourceFolder);
         }
       }
@@ -148,9 +148,9 @@ public class CopyingOfFiles extends Shell {
       @Override
       public void widgetSelected(final SelectionEvent arg0) {
         String presentPath = "C://temp";
-        String sourceFolder = openDirectoryDialog(shell, "Select the Source folder", presentPath);
-        if (destFolderTxt.getText().isEmpty()) {
-          destFolderTxt.setText(sourceFolder);
+        String targetFolder = openDirectoryDialog(shell, "Select the Source folder", presentPath);
+        if (targetFolder != null) {
+          destFolderTxt.setText(targetFolder);
         }
       }
     });
