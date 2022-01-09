@@ -112,8 +112,8 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
     }
     if (isSuccess && folderCounter==folderCount) {
       JFrame frame = new JFrame();
+      JOptionPane.showMessageDialog(frame, filePathWithNameList.size() +" copied Successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
       createLogFile(filePathWithNameList);
-      JOptionPane.showMessageDialog(frame, "Copied Successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
     }
 
   }
@@ -125,13 +125,10 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
 private static void createLogFile(List<String> filePathWithNameList) {
 	try {
 		File tempFolder= new File("C:\\temp");
-		if(!tempFolder.exists())
+		File tempFile=new File("C:\\temp\\FileApplication.txt");
+		if(!tempFolder.exists() && tempFile.exists())
 		{
 			tempFolder.mkdir();
-		}
-		File tempFile = new File("C:\\temp\\FileApplication.txt");
-		if(tempFile.exists())
-		{
 			tempFile.delete();
 		}
 		FileWriter myWriter = new FileWriter("C:\\temp\\FileApplication.txt");
