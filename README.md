@@ -15,6 +15,12 @@ Procedure :
 
 Please find the executable file in https://github.com/YashzAlphaGeek/SWT_CopyingOfFiles/blob/master/CopyingFilesUtil/CopyingOfFiles.exe
 
+
+Info :
+Added Log file having copied file information
+<kbd> <img src="https://github.com/YashzAlphaGeek/SWT_CopyingOfFiles/blob/master/Images/TempFile.png"/> </kbd>
+
+
 ------------------------------------------------------------------------------------
 “Thanks for watching. If you liked this page, make sure to subscribe for more!”
 
