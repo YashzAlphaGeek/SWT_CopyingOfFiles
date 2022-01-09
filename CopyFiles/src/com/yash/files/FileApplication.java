@@ -53,11 +53,10 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
    * @param selectedfileType - Selected File Type
    */
   public FileApplication(String sourceFolderLoc, String targetFolderLoc, String selectedDate, String selectedfileType) {
-    File directoryPath = new File(sourceFolderLoc);
     File destPath = new File(targetFolderLoc);
 	List<String> folderPathList= new ArrayList<>();
     filteringOfFolder(selectedfileType);
-    String deleteFilesList[] = directoryPath.list(textFilefilter);
+    String deleteFilesList[] = destPath.list(textFilefilter);
     deleteExistingFileInFolder(targetFolderLoc, deleteFilesList);
     filteringOfFolder(selectedfileType);
     getFolderList(sourceFolderLoc,folderPathList);
@@ -125,6 +124,11 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
  */
 private static void createLogFile(List<String> filePathWithNameList) {
 	try {
+		File tempFolder= new File("C:\\temp");
+		if(!tempFolder.exists())
+		{
+			tempFolder.mkdir();
+		}
 		File tempFile = new File("C:\\temp\\FileApplication.txt");
 		if(tempFile.exists())
 		{
@@ -135,7 +139,8 @@ private static void createLogFile(List<String> filePathWithNameList) {
 		myWriter.write(listOfFiles);
 		myWriter.close();
 		System.out.println("Successfully wrote to the file.");
-		} catch (IOException e) {
+		} 
+	catch (IOException e) {
 		System.out.println("An error occurred.");
 		e.printStackTrace();
 	}	

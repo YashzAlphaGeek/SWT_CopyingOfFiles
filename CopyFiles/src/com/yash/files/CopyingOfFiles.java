@@ -78,7 +78,7 @@ public class CopyingOfFiles extends Shell {
     Label lblDate = new Label(this, SWT.NONE);
     lblDate.setAlignment(SWT.CENTER);
     lblDate.setBounds(33, 166, 134, 30);
-    lblDate.setText("Date (MM/DD/YYYY)");
+    lblDate.setText("Date (DD/MM/YYYY)");
 
     btnCopyFiles = new Button(this, SWT.NONE);
     btnCopyFiles.setBounds(242, 281, 98, 36);
@@ -91,6 +91,7 @@ public class CopyingOfFiles extends Shell {
 
     sourceFolderTxt = new Text(this, SWT.BORDER);
     sourceFolderTxt.setBounds(222, 31, 230, 30);
+    sourceFolderTxt.setText("E:\\gokuladevi\\Minutes");
 
     Label lblDestinationFolder = new Label(this, SWT.NONE);
     lblDestinationFolder.setAlignment(SWT.CENTER);
@@ -99,6 +100,7 @@ public class CopyingOfFiles extends Shell {
 
     destFolderTxt = new Text(this, SWT.BORDER);
     destFolderTxt.setBounds(222, 103, 230, 30);
+    destFolderTxt.setText("E:\\gokuladevi\\Mail");
 
     btnBrowseSource = new Button(this, SWT.NONE);
     btnBrowseSource.setBounds(502, 31, 75, 33);
@@ -117,6 +119,7 @@ public class CopyingOfFiles extends Shell {
     fileTypeCombo.setBounds(222, 228, 230, 23);
     String[] items = new String[] { "PDF", "TXT" };
     fileTypeCombo.setItems(items);
+    fileTypeCombo.setText("PDF");
     createContents();
     addListeners();
   }
