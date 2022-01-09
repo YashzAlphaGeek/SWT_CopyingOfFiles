@@ -11,7 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -62,7 +64,7 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
     getFolderList(sourceFolderLoc,folderPathList);
     int folderCount = folderPathList.size();
     int folderCounter=1;
-    List<String> filePathWithNameList= new ArrayList<String>();
+    Set<String> filePathWithNameList= new HashSet<String>();
     for(String path : folderPathList)
     {
     File folderPath= new File(path);
@@ -96,7 +98,7 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
  * @param folderCounter 
  * @param filePathWithNameList 
    */
-  private static void performCopyOperation(File sourcePath, File destPath, String[] filesList, String selectedDate, int folderCount, int folderCounter, List<String> filePathWithNameList) {
+  private static void performCopyOperation(File sourcePath, File destPath, String[] filesList, String selectedDate, int folderCount, int folderCounter, Set<String> filePathWithNameList) {
     for (String fileName : filesList) {
       try {
         File file = new File(sourcePath + "\\" + fileName);
@@ -117,9 +119,9 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
  * @param destPath
  * @param filePathWithNameList
  */
-private static void successMessage(File destPath, List<String> filePathWithNameList) {
+private static void successMessage(File destPath, Set<String> filePathWithNameList) {
 	JFrame frame = new JFrame();
-      JOptionPane.showMessageDialog(frame, filePathWithNameList.size() +" copied Successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(frame, filePathWithNameList.size() +" files copied successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
       createLogFile(filePathWithNameList);
 }
 
@@ -127,7 +129,7 @@ private static void successMessage(File destPath, List<String> filePathWithNameL
  * Log File creation
  * @param filePathWithNameList 
  */
-private static void createLogFile(List<String> filePathWithNameList) {
+private static void createLogFile(Set<String> filePathWithNameList) {
 	try {
 		File tempFolder= new File("C:\\temp");
 		File tempFile=new File("C:\\temp\\FileApplication.txt");
@@ -137,10 +139,10 @@ private static void createLogFile(List<String> filePathWithNameList) {
 			tempFile.delete();
 		}
 		FileWriter myWriter = new FileWriter("C:\\temp\\FileApplication.txt");
-		String listOfFiles = String.join("; ", filePathWithNameList);
+		String listOfFiles = String.join("; \n", filePathWithNameList);
 		myWriter.write(listOfFiles);
+		myWriter.append("\nSuccessfully wrote to the file.");
 		myWriter.close();
-		System.out.println("Successfully wrote to the file.");
 		} 
 	catch (IOException e) {
 		System.out.println("An error occurred.");
