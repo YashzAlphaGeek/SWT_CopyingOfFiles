@@ -3,8 +3,6 @@
  */
 package com.yash.files;
 
-import java.text.SimpleDateFormat;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -18,6 +16,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import com.yash.constants.Constants;
 
 
 /**
@@ -33,7 +33,6 @@ public class CopyingOfFiles extends Shell {
   private Combo fileTypeCombo;
   private DateTime dateTime;
   private Button btnCopyFiles;
-  SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 
   /**
@@ -117,9 +116,9 @@ public class CopyingOfFiles extends Shell {
 
     fileTypeCombo = new Combo(this, SWT.NONE);
     fileTypeCombo.setBounds(222, 228, 230, 23);
-    String[] items = new String[] { "PDF", "TXT" };
+    String[] items = new String[] { Constants.PDF_FORMAT, Constants.TXT_FORMAT,Constants.XLSX_FORMAT,Constants.XLS_FORMAT,Constants.ALL_FORMAT };
     fileTypeCombo.setItems(items);
-    fileTypeCombo.setText("PDF");
+    fileTypeCombo.setText(Constants.PDF_FORMAT);
     createContents();
     addListeners();
   }
@@ -151,7 +150,7 @@ public class CopyingOfFiles extends Shell {
       @Override
       public void widgetSelected(final SelectionEvent arg0) {
         String presentPath = "C://temp";
-        String targetFolder = openDirectoryDialog(shell, "Select the Source folder", presentPath);
+        String targetFolder = openDirectoryDialog(shell, "Select the Destination folder", presentPath);
         if (targetFolder != null) {
           destFolderTxt.setText(targetFolder);
         }
@@ -170,22 +169,9 @@ public class CopyingOfFiles extends Shell {
         String targetFolderLoc = destFolderTxt.getText();
         String selectedDate = "";
         int day = dateTime.getDay();
-        int month = dateTime.getMonth();
-        int dayLength = String.valueOf(day).length();
-        int monthLength = String.valueOf(month).length();
-        if (dayLength == 1 && monthLength == 1) {
-          selectedDate = dateTime.getMonth() + 1 + "/" + "0" + dateTime.getDay() + "/" + dateTime.getYear();
-          selectedDate = "0" + selectedDate;
-        }
-        else if (dayLength == 1 && monthLength == 2) {
-          selectedDate = dateTime.getMonth() + 1 + "/" + "0" + dateTime.getDay() + "/" + dateTime.getYear();
-        }
-        else if (dayLength == 2 && monthLength == 1) {
-          selectedDate = dateTime.getMonth() + 1 + "/" + dateTime.getDay() + "/" + dateTime.getYear();
-        }
-        else {
-          selectedDate = dateTime.getMonth() + 1 + "/" + dateTime.getDay() + "/" + dateTime.getYear();
-        }
+        int month =dateTime.getMonth()==0?dateTime.getMonth()+1:dateTime.getMonth();
+        int year = dateTime.getYear();
+        selectedDate = day  + "/" +month + "/" + year;
         String selectedfileType = fileTypeCombo.getText();
         if (!(sourceFolderLoc.isEmpty() && targetFolderLoc.isEmpty() && selectedDate.isEmpty() &&
             selectedfileType.isEmpty())) {

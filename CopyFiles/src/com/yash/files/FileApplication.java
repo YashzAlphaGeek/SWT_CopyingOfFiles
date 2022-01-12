@@ -10,12 +10,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
@@ -85,6 +82,13 @@ private static Set<String> getFolderList(String sourcePath, Set<String> folderPa
     }
     if (selectedfileType.equals("TXT")) {
       textFilefilter = filteringOfFiles(".txt");
+    }
+    if (selectedfileType.equals("XLSX")) {
+        textFilefilter = filteringOfFiles(".xlsx");
+      }
+    if(selectedfileType.equals("XLS"))
+    {
+        textFilefilter = filteringOfFiles(".xls");
     }
   }
 
@@ -157,7 +161,7 @@ private static void createLogFile(Set<String> filePathWithNameList) {
   private static boolean checkFileDate(File file, String selectedDate) {
     try {
       BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-      SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+      SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
       String dateCreated = df.format(attr.lastModifiedTime().toMillis());
       if (dateCreated.equals(selectedDate)) {
         return true;
