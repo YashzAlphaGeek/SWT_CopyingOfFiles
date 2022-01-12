@@ -32,7 +32,7 @@ public class FileApplication {
  * @param folderPathList 
  * @param string
  */
-private static List<String> getFolderList(String sourcePath, List<String> folderPathList) {
+private static Set<String> getFolderList(String sourcePath, Set<String> folderPathList) {
 	File directoryPath = new File(sourcePath);
 	folderPathList.add(sourcePath);
 	File[] listFiles = directoryPath.listFiles();
@@ -56,7 +56,7 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
    */
   public FileApplication(String sourceFolderLoc, String targetFolderLoc, String selectedDate, String selectedfileType) {
     File destPath = new File(targetFolderLoc);
-	List<String> folderPathList= new ArrayList<>();
+	Set<String> folderPathList= new HashSet<>();
     filteringOfFolder(selectedfileType);
     String deleteFilesList[] = destPath.list(textFilefilter);
     deleteExistingFileInFolder(targetFolderLoc, deleteFilesList);
@@ -120,8 +120,7 @@ private static List<String> getFolderList(String sourcePath, List<String> folder
  * @param filePathWithNameList
  */
 private static void successMessage(File destPath, Set<String> filePathWithNameList) {
-	JFrame frame = new JFrame();
-      JOptionPane.showMessageDialog(frame, filePathWithNameList.size() +" files copied successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(null, filePathWithNameList.size() +" files copied successfully to " + destPath, "Alert", JOptionPane.WARNING_MESSAGE);
       createLogFile(filePathWithNameList);
 }
 
@@ -158,7 +157,7 @@ private static void createLogFile(Set<String> filePathWithNameList) {
   private static boolean checkFileDate(File file, String selectedDate) {
     try {
       BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-      SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+      SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
       String dateCreated = df.format(attr.lastModifiedTime().toMillis());
       if (dateCreated.equals(selectedDate)) {
         return true;

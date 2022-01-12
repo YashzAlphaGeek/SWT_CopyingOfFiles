@@ -33,7 +33,7 @@ public class CopyingOfFiles extends Shell {
   private Combo fileTypeCombo;
   private DateTime dateTime;
   private Button btnCopyFiles;
-  SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+  SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 
   /**
