@@ -3,7 +3,6 @@
  */
 package com.yash.files;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -20,6 +19,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.yash.constants.Constants;
 
@@ -74,20 +74,28 @@ public class CopyingOfFiles extends Shell {
    */
   public CopyingOfFiles(Display display) {
     super(display, SWT.DIALOG_TRIM | SWT.MIN | SWT.MAX);
+    setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND));
 
     dateTime = new DateTime(this, SWT.BORDER);
+    dateTime.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
     dateTime.setBounds(222, 166, 230, 24);
 
     Label lblDate = new Label(this, SWT.NONE);
+    lblDate.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND));
+    lblDate.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
     lblDate.setAlignment(SWT.CENTER);
     lblDate.setBounds(33, 166, 134, 30);
     lblDate.setText("Date (DD/MM/YYYY)");
 
-    btnCopyFiles = new Button(this, SWT.NONE);
+    btnCopyFiles = new Button(this, SWT.BORDER);
+    btnCopyFiles.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
     btnCopyFiles.setBounds(242, 281, 98, 36);
     btnCopyFiles.setText("Copy Files");
 
-    Label lblSourceFolder = new Label(this, SWT.NONE);
+    Label lblSourceFolder = new Label(this, SWT.CENTER);
+    lblSourceFolder.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
+    lblSourceFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND));
+    lblSourceFolder.setAlignment(SWT.CENTER);
     lblSourceFolder.setAlignment(SWT.CENTER);
     lblSourceFolder.setBounds(33, 34, 134, 30);
     lblSourceFolder.setText("Source Folder");
@@ -95,8 +103,11 @@ public class CopyingOfFiles extends Shell {
     sourceFolderTxt = new Text(this, SWT.BORDER);
     sourceFolderTxt.setBounds(222, 31, 230, 30);
     sourceFolderTxt.setText("E:\\gokuladevi\\Minutes");
+    sourceFolderTxt.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 
-    Label lblDestinationFolder = new Label(this, SWT.NONE);
+    Label lblDestinationFolder = new Label(this, SWT.CENTER);
+    lblDestinationFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND));
+    lblDestinationFolder.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
     lblDestinationFolder.setAlignment(SWT.CENTER);
     lblDestinationFolder.setBounds(33, 106, 134, 30);
     lblDestinationFolder.setText("Destination Folder");
@@ -104,16 +115,22 @@ public class CopyingOfFiles extends Shell {
     destFolderTxt = new Text(this, SWT.BORDER);
     destFolderTxt.setBounds(222, 103, 230, 30);
     destFolderTxt.setText("E:\\gokuladevi\\Mail");
+    destFolderTxt.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
 
-    btnBrowseSource = new Button(this, SWT.NONE);
+
+    btnBrowseSource = new Button(this, SWT.BORDER);
+    btnBrowseSource.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
     btnBrowseSource.setBounds(502, 31, 75, 33);
     btnBrowseSource.setText("Browse");
 
-    btnBrowseTarget = new Button(this, SWT.NONE);
+    btnBrowseTarget = new Button(this, SWT.BORDER);
+    btnBrowseTarget.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
     btnBrowseTarget.setText("Browse");
     btnBrowseTarget.setBounds(502, 103, 75, 33);
 
-    Label lblFileType = new Label(this, SWT.NONE);
+    Label lblFileType = new Label(this, SWT.CENTER);
+    lblFileType.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND));
+    lblFileType.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
     lblFileType.setAlignment(SWT.CENTER);
     lblFileType.setBounds(33, 228, 134, 30);
     lblFileType.setText("File Type");
@@ -122,6 +139,7 @@ public class CopyingOfFiles extends Shell {
     fileTypeCombo.setBounds(222, 228, 230, 23);
     String[] items = new String[] { Constants.PDF_FORMAT, Constants.TXT_FORMAT,Constants.XLSX_FORMAT,Constants.XLS_FORMAT,Constants.ALL_FORMAT };
     fileTypeCombo.setItems(items);
+    fileTypeCombo.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
     fileTypeCombo.setText(Constants.PDF_FORMAT);
     createContents();
     addListeners();
@@ -181,8 +199,6 @@ public class CopyingOfFiles extends Shell {
           shell.close();
           new FileApplication(sourceFolderLoc, targetFolderLoc, selectedDate, selectedfileType);
         }
-
-
       }
 
     });
