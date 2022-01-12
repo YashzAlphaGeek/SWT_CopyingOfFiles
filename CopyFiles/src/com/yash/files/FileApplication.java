@@ -23,7 +23,7 @@ import org.apache.commons.io.FileUtils;
 public class FileApplication {
 
   private FilenameFilter textFilefilter;
-
+  private static SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
   
   /**
  * @param folderPathList 
@@ -161,7 +161,6 @@ private static void createLogFile(Set<String> filePathWithNameList) {
   private static boolean checkFileDate(File file, String selectedDate) {
     try {
       BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-      SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
       String dateCreated = df.format(attr.lastModifiedTime().toMillis());
       if (dateCreated.equals(selectedDate)) {
         return true;

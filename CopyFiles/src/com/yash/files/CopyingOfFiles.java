@@ -3,6 +3,10 @@
  */
 package com.yash.files;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -33,7 +37,7 @@ public class CopyingOfFiles extends Shell {
   private Combo fileTypeCombo;
   private DateTime dateTime;
   private Button btnCopyFiles;
-
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
   /**
    * Launch the application.
@@ -168,10 +172,9 @@ public class CopyingOfFiles extends Shell {
         String sourceFolderLoc = sourceFolderTxt.getText();
         String targetFolderLoc = destFolderTxt.getText();
         String selectedDate = "";
-        int day = dateTime.getDay();
-        int month =dateTime.getMonth()==0?dateTime.getMonth()+1:dateTime.getMonth();
-        int year = dateTime.getYear();
-        selectedDate = day  + "/" +month + "/" + year;
+        LocalDateTime datesTime = 
+        		   LocalDateTime.of(dateTime.getYear(), dateTime.getMonth() + 1, dateTime.getDay(), dateTime.getHours(), dateTime.getMinutes(), dateTime.getSeconds());
+        selectedDate = datesTime.format(formatter);
         String selectedfileType = fileTypeCombo.getText();
         if (!(sourceFolderLoc.isEmpty() && targetFolderLoc.isEmpty() && selectedDate.isEmpty() &&
             selectedfileType.isEmpty())) {
